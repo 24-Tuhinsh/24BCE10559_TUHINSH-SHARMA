@@ -1,0 +1,95 @@
+CREATE TABLE category(
+    cid INTEGER PRIMARY KEY,
+    cname TEXT NOT NULL
+);
+
+CREATE TABLE products(
+    pid INTEGER PRIMARY KEY,
+    pname TEXT NOT NULL,
+    cid INTEGER,
+    FOREIGN KEY(cid) REFERENCES category(cid)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Worker(
+    worker_id INTEGER PRIMARY KEY,
+    first_name TEXT,
+    last_name TEXT,
+    department TEXT,
+    joining_time TEXT,
+    salary INTEGER
+);
+
+INSERT INTO Worker VALUES
+(1,'Rahul','Sharma','HR','2024-01-10 09:00:00',30000),
+(2,'Aman','Verma','IT','2024-02-15 10:00:00',45000),
+(3,'Neha','Singh','HR','2024-03-20 11:00:00',35000),
+(4,'Riya','Gupta','Sales','2024-04-12 09:30:00',40000),
+(5,'Karan','Mehta','IT','2024-05-01 08:45:00',50000);
+
+SELECT * FROM Worker;
+
+SELECT first_name,last_name
+FROM Worker
+WHERE department='HR';
+
+SELECT COUNT(worker_id)
+FROM Worker
+WHERE department='IT' OR department='HR';
+
+SELECT department,COUNT(department)
+FROM Worker
+GROUP BY department
+ORDER BY department ASC;
+
+SELECT joining_time,COUNT(joining_time)
+FROM Worker
+GROUP BY joining_time
+ORDER BY joining_time ASC;
+
+SELECT department,COUNT(department)
+FROM Worker
+GROUP BY department
+HAVING COUNT(department) >=2
+ORDER BY department ASC;
+
+SELECT * FROM Worker
+LIMIT 2 OFFSET 3;
+
+CREATE TABLE toppers(
+    roll_no INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    course TEXT,
+    marks INTEGER
+);
+
+INSERT INTO toppers VALUES
+(1,'Aman','BCA',95),
+(2,'Riya','BTech',92),
+(3,'Neha','BSc',96),
+(4,'Karan','BCA',91),
+(5,'Rahul','BTech',94);
+
+SELECT * FROM toppers;
+
+SELECT first_name,department
+FROM Worker
+WHERE worker_id IN
+(SELECT roll_no FROM toppers);
+
+SELECT department,MIN(salary) AS lowest_salary
+FROM Worker
+GROUP BY department
+ORDER BY lowest_salary ASC
+LIMIT 2;
+
+SELECT first_name,last_name,salary
+FROM Worker
+WHERE department='IT'
+ORDER BY salary DESC
+LIMIT 2;
+
+SELECT department,first_name,last_name,salary
+FROM Worker
+ORDER BY department,salary DESC
+LIMIT 1 OFFSET 1;
